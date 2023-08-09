@@ -5,7 +5,7 @@ terraform {
     container_name       = "secrets.TFSTATE_CONTAINER_NAME"
     key                  = "prod.terraform.tfstate"
     use_azuread_auth     = true
-    subscription_id      = secrets.ARM_SUBSCRIPTION_ID"
+    subscription_id      = "secrets.ARM_SUBSCRIPTION_ID"
     tenant_id            = "secrets.ARM_TENANT_ID"
   }
 }
