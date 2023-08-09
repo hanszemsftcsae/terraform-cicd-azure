@@ -7,13 +7,16 @@ on:
     branches: [ "main" ]
   pull_request:
 
+# Important to set id-token: write permission for OpenId use of actions
 permissions:
   contents: read
+  id-token: write
+  
 
 jobs:
   terraform:
     name: 'Terraform'
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     strategy:
       fail-fast: false
@@ -39,7 +42,25 @@ jobs:
     # Show the environment values
     - name: Show env
       run: env | sort
-        
+
+    # Login to Azure using AzPowershell and OIDC
+    - name: Azure login using OIDC
+      uses: azure/login@v1
+      with:
+        client-id: ${{ secrets.ARM_CLIENT_ID }}
+        tenant-id: ${{ secrets.ARM_TENANT_ID }}
+        subscription-id:  ${{ secrets.ARM_SUBSCRIPTION_ID }}
+        enable-AzPSSession: true
+        #allow-no-subscriptions: true
+
+    # Test that we can access Azure Resources
+    - name: 'Get Resource Groups in Subscription'
+      uses: azure/powershell@v1
+      with:
+        inlineScript: |
+          Get-AzResourceGroup
+          azPSVersion: "latest"
+
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v3
@@ -51,14 +72,6 @@ jobs:
         terraform_version: ${{ matrix.terraform_version }}
         terraform_wrapper: false
         
-    # Login to Azure 
-    - name: Azure login
-      uses: azure/login@v1
-      with:
-        client-id: ${{ secrets.ARM_CLIENT_ID }}
-        tenant-id: ${{ secrets.ARM_TENANT_ID }}
-        allow-no-subscriptions: true
-
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
       run: terraform init
