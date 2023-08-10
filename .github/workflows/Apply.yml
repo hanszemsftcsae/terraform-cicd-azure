@@ -1,6 +1,6 @@
 # This workflow installs the latest version of Terraform CLI 
 
-name: 'Terraform'
+name: 'Init Terraform - Login to Az'
 
 on:
   push:
