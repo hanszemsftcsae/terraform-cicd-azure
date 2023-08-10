@@ -27,7 +27,7 @@ jobs:
         azurerm_version: ['latest', '3.7.0']
         terraform_version: ['latest', '1.3.0']
         
-    environment: production
+  #  environment: production
 
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
