@@ -69,7 +69,7 @@ jobs:
       with:
         inlineScript: |
           Get-AzResourceGroup
-          azPSVersion: "latest"
+        azPSVersion: "latest"
 
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
