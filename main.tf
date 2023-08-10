@@ -1,12 +1,16 @@
 
 terraform {
+  required_providers {
+    azurerm = {
+      source = "hashicorp/azurerm"
+      version = "~>3.0"
+    }
+  }
   backend "azurerm" {
-    storage_account_name = "secrets.BACKEND_STORAGEACCOUNT_NAME"
-    container_name       = "secrets.TFSTATE_CONTAINER_NAME"
-    key                  = "prod.terraform.tfstate"
-    use_azuread_auth     = true
-    subscription_id      = "secrets.ARM_SUBSCRIPTION_ID"
-    tenant_id            = "secrets.ARM_TENANT_ID"
+    resource_group_name = "terraform"
+    storage_account_name = "terraform20230809sa"
+    container_name       = "tfstate"
+    key                  = "terraform.tfstate"
   }
 }
 
