@@ -3,9 +3,11 @@
 name: 'Init Terraform - Login to Az'
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
+  workflow_dispatch 
+  
+#  push:
+#    branches: [ "main" ]
+#  pull_request:
 
 # Important to set id-token: write permission for OpenId use of actions
 permissions:
@@ -44,14 +46,22 @@ jobs:
       run: env | sort
 
     # Login to Azure using AzPowershell and OIDC
-    - name: Azure login using OIDC
+#    - name: Azure login using OIDC
+#      uses: azure/login@v1
+#      with:
+#        client-id: ${{ secrets.ARM_CLIENT_ID }}
+#        tenant-id: ${{ secrets.ARM_TENANT_ID }}
+#        subscription-id:  ${{ secrets.ARM_SUBSCRIPTION_ID }}
+#        enable-AzPSSession: true
+#        #allow-no-subscriptions: true
+
+    - name: 'Az CLI login'
       uses: azure/login@v1
       with:
-        client-id: ${{ secrets.ARM_CLIENT_ID }}
-        tenant-id: ${{ secrets.ARM_TENANT_ID }}
-        subscription-id:  ${{ secrets.ARM_SUBSCRIPTION_ID }}
-        enable-AzPSSession: true
-        #allow-no-subscriptions: true
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          enable-AzPSSession: true
 
     # Test that we can access Azure Resources
     - name: 'Get Resource Groups in Subscription'
